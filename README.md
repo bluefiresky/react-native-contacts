@@ -1,4 +1,9 @@
 # React Native Contacts
+来源于 [rt2zz/react-native-contacts](https://github.com/rt2zz/react-native-contacts)
+新增了 获取短信记录、通话记录(for android)的功能
+
+
+# 以下为原功能：
 Rx support with [react-native-contacts-rx](https://github.com/JeanLebrument/react-native-contacts-rx)
 
 ## Status
