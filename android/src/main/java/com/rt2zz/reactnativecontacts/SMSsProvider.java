@@ -103,10 +103,10 @@ public class SMSsProvider {
           WritableMap record = Arguments.createMap();
           record.putString("person", convertName(person));
           record.putString("address", address);
-          record.putString("type", convertType(type));
-          record.putString("date", convertTime(date));
+          record.putInt("type", type);
+          record.putString("date", String.valueOf(date));
           record.putString("body", body);
-          record.putString("read", convertRead(read));
+          record.putInt("read", read);
 
           return record;
       }

@@ -73,6 +73,9 @@ public class ContactsProvider {
                     null
             );
 
+            if(cursor == null)
+              return null;
+
             try {
                 justMe = loadContactsFrom(cursor);
             } finally {
@@ -91,6 +94,9 @@ public class ContactsProvider {
                     new String[]{Email.CONTENT_ITEM_TYPE, Phone.CONTENT_ITEM_TYPE, StructuredName.CONTENT_ITEM_TYPE},
                     null
             );
+
+            if(cursor == null)
+              return null;
 
             try {
                 everyoneElse = loadContactsFrom(cursor);
@@ -143,15 +149,15 @@ public class ContactsProvider {
 
             String mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
 
-            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            if (!TextUtils.isEmpty(name) && TextUtils.isEmpty(contact.displayName)) {
-                contact.displayName = name;
-            }
+            // String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            // if (!TextUtils.isEmpty(name) && TextUtils.isEmpty(contact.displayName)) {
+            //     contact.displayName = name;
+            // }
 
-            String rawPhotoURI = cursor.getString(cursor.getColumnIndex(Contactables.PHOTO_URI));
-            if (!TextUtils.isEmpty(rawPhotoURI)) {
-                contact.photoUri = getPhotoURIFromContactURI(rawPhotoURI, contactId);
-            }
+            // String rawPhotoURI = cursor.getString(cursor.getColumnIndex(Contactables.PHOTO_URI));
+            // if (!TextUtils.isEmpty(rawPhotoURI)) {
+            //     contact.photoUri = getPhotoURIFromContactURI(rawPhotoURI, contactId);
+            // }
 
             if (mimeType.equals(StructuredName.CONTENT_ITEM_TYPE)) {
                 contact.givenName = cursor.getString(cursor.getColumnIndex(StructuredName.GIVEN_NAME));
@@ -178,35 +184,36 @@ public class ContactsProvider {
                     }
                     contact.phones.add(new Contact.Item(label, phoneNumber));
                 }
-            } else if (mimeType.equals(Email.CONTENT_ITEM_TYPE)) {
-                String email = cursor.getString(cursor.getColumnIndex(Email.ADDRESS));
-                int type = cursor.getInt(cursor.getColumnIndex(Email.TYPE));
-
-                if (!TextUtils.isEmpty(email)) {
-                    String label;
-                    switch (type) {
-                        case Email.TYPE_HOME:
-                            label = "home";
-                            break;
-                        case Email.TYPE_WORK:
-                            label = "work";
-                            break;
-                        case Email.TYPE_MOBILE:
-                            label = "mobile";
-                            break;
-                        case Email.TYPE_CUSTOM:
-                            if (cursor.getString(cursor.getColumnIndex(Email.LABEL)) != null) {
-                                label = cursor.getString(cursor.getColumnIndex(Email.LABEL)).toLowerCase();
-                            } else {
-                                label = "";
-                            }
-                            break;
-                        default:
-                            label = "other";
-                    }
-                    contact.emails.add(new Contact.Item(label, email));
-                }
             }
+            // else if (mimeType.equals(Email.CONTENT_ITEM_TYPE)) {
+            //     String email = cursor.getString(cursor.getColumnIndex(Email.ADDRESS));
+            //     int type = cursor.getInt(cursor.getColumnIndex(Email.TYPE));
+            //
+            //     if (!TextUtils.isEmpty(email)) {
+            //         String label;
+            //         switch (type) {
+            //             case Email.TYPE_HOME:
+            //                 label = "home";
+            //                 break;
+            //             case Email.TYPE_WORK:
+            //                 label = "work";
+            //                 break;
+            //             case Email.TYPE_MOBILE:
+            //                 label = "mobile";
+            //                 break;
+            //             case Email.TYPE_CUSTOM:
+            //                 if (cursor.getString(cursor.getColumnIndex(Email.LABEL)) != null) {
+            //                     label = cursor.getString(cursor.getColumnIndex(Email.LABEL)).toLowerCase();
+            //                 } else {
+            //                     label = "";
+            //                 }
+            //                 break;
+            //             default:
+            //                 label = "other";
+            //         }
+            //         contact.emails.add(new Contact.Item(label, email));
+            //     }
+            // }
         }
 
         return map;
@@ -251,14 +258,14 @@ public class ContactsProvider {
     }
 
     private static class Contact {
-        private String contactId;
-        private String displayName;
-        private String givenName = "";
-        private String middleName = "";
-        private String familyName = "";
-        private String photoUri;
-        private List<Item> emails = new ArrayList<>();
-        private List<Item> phones = new ArrayList<>();
+        private String contactId;         // 联系人本地ID
+        private String displayName;       //
+        private String givenName = "";    // 名字
+        private String middleName = "";   // 中间名
+        private String familyName = "";   // 姓氏
+        private String photoUri;          // 头像
+        private List<Item> emails = new ArrayList<>();  // 邮件列表
+        private List<Item> phones = new ArrayList<>();  // 电话列表
 
         public Contact(String contactId) {
             this.contactId = contactId;
@@ -266,29 +273,26 @@ public class ContactsProvider {
 
         public WritableMap toMap() {
             WritableMap contact = Arguments.createMap();
-            contact.putString("recordID", contactId);
+            // contact.putString("recordID", contactId);
             contact.putString("givenName", TextUtils.isEmpty(givenName) ? displayName : givenName);
             contact.putString("middleName", middleName);
             contact.putString("familyName", familyName);
-            contact.putString("thumbnailPath", photoUri == null ? "" : photoUri);
+            // contact.putString("thumbnailPath", photoUri == null ? "" : photoUri);
 
             WritableArray phoneNumbers = Arguments.createArray();
             for (Item item : phones) {
-                WritableMap map = Arguments.createMap();
-                map.putString("number", item.value);
-                map.putString("label", item.label);
-                phoneNumbers.pushMap(map);
+                phoneNumbers.pushString(item.value);
             }
             contact.putArray("phoneNumbers", phoneNumbers);
 
-            WritableArray emailAddresses = Arguments.createArray();
-            for (Item item : emails) {
-                WritableMap map = Arguments.createMap();
-                map.putString("email", item.value);
-                map.putString("label", item.label);
-                emailAddresses.pushMap(map);
-            }
-            contact.putArray("emailAddresses", emailAddresses);
+            // WritableArray emailAddresses = Arguments.createArray();
+            // for (Item item : emails) {
+            //     WritableMap map = Arguments.createMap();
+            //     map.putString("email", item.value);
+            //     map.putString("label", item.label);
+            //     emailAddresses.pushMap(map);
+            // }
+            // contact.putArray("emailAddresses", emailAddresses);
 
             return contact;
         }

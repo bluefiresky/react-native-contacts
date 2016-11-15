@@ -91,8 +91,8 @@ public class RecordsProvider {
           WritableMap record = Arguments.createMap();
           record.putString("name", convertName(name));
           record.putString("number", number);
-          record.putString("type", convertType(type));
-          record.putString("time", convertTime(time));
+          record.putInt("type", type);
+          record.putString("time", String.valueOf(time));
           record.putString("duration", String.valueOf(duration));
 
           return record;
