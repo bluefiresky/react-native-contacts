@@ -48,7 +48,7 @@ public class SMSsProvider {
         WritableArray everyoneElse;
         {
             Cursor cursor = contentResolver.query(
-                    SMS_URI_ALL,
+                    Uri.parse(SMS_URI_ALL),
                     SMS_PROJECTION.toArray(new String[SMS_PROJECTION.size()]),
                     null,
                     null,

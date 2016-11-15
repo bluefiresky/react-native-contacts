@@ -93,7 +93,7 @@ public class RecordsProvider {
           record.putString("number", number);
           record.putString("type", convertType(type));
           record.putString("time", convertTime(time));
-          record.putLong("duration", String.valueOf(duration));
+          record.putString("duration", String.valueOf(duration));
 
           return record;
       }
