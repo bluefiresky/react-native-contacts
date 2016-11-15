@@ -14,7 +14,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
 public class RecordsProvider {
-    private final static TAG = RecordsProvider.class.getName();
+    private final static String TAG = RecordsProvider.class.getName();
     private final ContentResolver contentResolver;
     private final Context context;
 
@@ -66,7 +66,7 @@ public class RecordsProvider {
                 record._new = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.NEW));
 
                 records.pushMap(record.toMap());
-                Log.e(TAG, record.toString())
+                Log.e(TAG, record.toString());
             } while (cursor.moveToNext());
         }
 

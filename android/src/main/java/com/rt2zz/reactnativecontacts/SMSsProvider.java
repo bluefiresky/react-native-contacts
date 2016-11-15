@@ -14,7 +14,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
 public class SMSsProvider {
-    private final static TAG = SMSsProvider.class.getName();
+    private final static String TAG = SMSsProvider.class.getName();
     private final ContentResolver contentResolver;
     private final Context context;
 
@@ -77,7 +77,7 @@ public class SMSsProvider {
                 sms.read = cursor.getInt(cursor.getColumnIndex("read"));
 
                 SMSs.pushMap(sms.toMap());
-                Log.e(TAG, sms.toString())
+                Log.e(TAG, sms.toString());
             } while (cursor.moveToNext());
         }
 
