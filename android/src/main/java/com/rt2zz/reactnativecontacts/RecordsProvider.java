@@ -1,5 +1,11 @@
 package com.rt2zz.reactnativecontacts;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -87,9 +93,9 @@ public class RecordsProvider {
           record.putString("number", number);
           record.putString("type", convertType(type));
           record.putString("time", convertTime(time));
-          record.putString("duration", duration);
+          record.putLong("duration", String.valueOf(duration));
 
-          return contact;
+          return record;
       }
 
       private String convertType(int type){

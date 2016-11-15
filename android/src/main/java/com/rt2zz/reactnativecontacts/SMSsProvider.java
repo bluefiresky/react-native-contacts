@@ -1,5 +1,11 @@
 package com.rt2zz.reactnativecontacts;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -43,7 +49,7 @@ public class SMSsProvider {
         {
             Cursor cursor = contentResolver.query(
                     SMS_URI_ALL,
-                    SMS_PROJECTION.toArray(new String[FULL_PROJECTION.size()]),
+                    SMS_PROJECTION.toArray(new String[SMS_PROJECTION.size()]),
                     null,
                     null,
                     "date desc"
@@ -81,7 +87,7 @@ public class SMSsProvider {
             } while (cursor.moveToNext());
         }
 
-        return records;
+        return SMSs;
     }
 
     private static class SMS {
@@ -95,14 +101,14 @@ public class SMSsProvider {
 
       public WritableMap toMap() {
           WritableMap record = Arguments.createMap();
-          record.putString("person", convertName(name));
-          record.putString("address", number);
+          record.putString("person", convertName(person));
+          record.putString("address", address);
           record.putString("type", convertType(type));
-          record.putString("date", convertTime(time));
-          record.putString("body", duration);
+          record.putString("date", convertTime(date));
+          record.putString("body", body);
           record.putString("read", convertRead(read));
 
-          return contact;
+          return record;
       }
 
       private String convertType(int type){
