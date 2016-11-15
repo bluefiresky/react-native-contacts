@@ -26,6 +26,34 @@ public class ContactsManager extends ReactContextBaseJavaModule {
     }
 
     /*
+     * 返回所有通话记录
+     */
+     @ReactMethod
+     public void getAllRecords(Callback callback){
+       Context context = getReactApplicationContext();
+       ContentResolver cr = context.getContentResolver();
+
+       RecordsProvider recordsProvider = new RecordsProvider(cr, context);
+       WritableArray records = recordsProvider.getRecords();
+
+       callback.invoke(null, records);
+     }
+
+    /*
+    * 返回所有短信记录
+    */
+    @ReactMethod
+    public void getAllSMS(Callback callback){
+      Context context = getReactApplicationContext();
+      ContentResolver cr = context.getContentResolver();
+
+      SMSsProvider smssProvider = new SMSsProvider(cr, context);
+      WritableArray smss = smssProvider.getSMSs();
+
+      callback.invoke(null, smss);
+    }
+
+    /*
      * Returns all contactable records on phone
      * queries CommonDataKinds.Contactables to get phones and emails
      */
