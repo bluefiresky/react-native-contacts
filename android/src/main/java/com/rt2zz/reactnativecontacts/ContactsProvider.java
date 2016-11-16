@@ -27,6 +27,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Contactables;
 import static android.provider.ContactsContract.CommonDataKinds.Email;
 import static android.provider.ContactsContract.CommonDataKinds.Phone;
 import static android.provider.ContactsContract.CommonDataKinds.StructuredName;
+import static android.provider.ContactsContract.CommonDataKinds.Organization;
 
 public class ContactsProvider {
     public static final int ID_FOR_PROFILE_CONTACT = -1;
@@ -149,10 +150,10 @@ public class ContactsProvider {
 
             String mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
 
-            // String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            // if (!TextUtils.isEmpty(name) && TextUtils.isEmpty(contact.displayName)) {
-            //     contact.displayName = name;
-            // }
+            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            if (!TextUtils.isEmpty(name) && TextUtils.isEmpty(contact.displayName)) {
+                contact.displayName = name;
+            }
 
             // String rawPhotoURI = cursor.getString(cursor.getColumnIndex(Contactables.PHOTO_URI));
             // if (!TextUtils.isEmpty(rawPhotoURI)) {
@@ -184,6 +185,8 @@ public class ContactsProvider {
                     }
                     contact.phones.add(new Contact.Item(label, phoneNumber));
                 }
+            }else if (mimeType.equals(Organization.CONTENT_ITEM_TYPE)) {
+                contact.company = cursor.getString(cursor.getColumnIndex(Organization.COMPANY));
             }
             // else if (mimeType.equals(Email.CONTENT_ITEM_TYPE)) {
             //     String email = cursor.getString(cursor.getColumnIndex(Email.ADDRESS));
@@ -264,6 +267,7 @@ public class ContactsProvider {
         private String middleName = "";   // 中间名
         private String familyName = "";   // 姓氏
         private String photoUri;          // 头像
+        private String company;
         private List<Item> emails = new ArrayList<>();  // 邮件列表
         private List<Item> phones = new ArrayList<>();  // 电话列表
 
@@ -273,7 +277,7 @@ public class ContactsProvider {
 
         public WritableMap toMap() {
             WritableMap contact = Arguments.createMap();
-            // contact.putString("recordID", contactId);
+            contact.putString("id", contactId);
             contact.putString("givenName", TextUtils.isEmpty(givenName) ? displayName : givenName);
             contact.putString("middleName", middleName);
             contact.putString("familyName", familyName);
@@ -284,6 +288,7 @@ public class ContactsProvider {
                 phoneNumbers.pushString(item.value);
             }
             contact.putArray("phoneNumbers", phoneNumbers);
+            contact.putString("company", company);
 
             // WritableArray emailAddresses = Arguments.createArray();
             // for (Item item : emails) {

@@ -64,6 +64,7 @@ public class RecordsProvider {
         if(cursor.moveToFirst()) {
             do {
                 Record record = new Record();
+                record.recordID = cursor.getString(cursor.getColumnIndex("_id"));
                 record.name = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME));
                 record.number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
                 record.type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
@@ -80,6 +81,7 @@ public class RecordsProvider {
     }
 
     private static class Record {
+      private String recordID;
       private String name;       //  联系人
       private String number;   //  号码
       private int type;              //  呼叫类型
@@ -89,6 +91,7 @@ public class RecordsProvider {
 
       public WritableMap toMap() {
           WritableMap record = Arguments.createMap();
+          record.putString("id", recordID)
           record.putString("name", convertName(name));
           record.putString("number", number);
           record.putInt("type", type);

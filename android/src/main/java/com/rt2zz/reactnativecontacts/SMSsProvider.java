@@ -26,6 +26,7 @@ public class SMSsProvider {
 
     private static final String SMS_URI_ALL = "content://sms/";
     private static final List<String> SMS_PROJECTION = new ArrayList<String>() {{
+        add("_id")
         add("address");
         add("person");
         add("body");
@@ -75,6 +76,7 @@ public class SMSsProvider {
         if(cursor.moveToFirst()) {
             do {
                 SMS sms = new SMS();
+                sms.smsID = cursor.getString(cursor.getColumnIndex("_id"));
                 sms.person = cursor.getString(cursor.getColumnIndex("person"));
                 sms.address = cursor.getString(cursor.getColumnIndex("address"));
                 sms.body = cursor.getString(cursor.getColumnIndex("body"));
@@ -91,6 +93,7 @@ public class SMSsProvider {
     }
 
     private static class SMS {
+      private String smsID;
       private String person;         // 发件人
       private String address;       // 发件地址
       private long date;            // 收件日期
@@ -101,6 +104,7 @@ public class SMSsProvider {
 
       public WritableMap toMap() {
           WritableMap record = Arguments.createMap();
+          record.putString("id", smsID);
           record.putString("person", convertName(person));
           record.putString("address", address);
           record.putInt("type", type);
