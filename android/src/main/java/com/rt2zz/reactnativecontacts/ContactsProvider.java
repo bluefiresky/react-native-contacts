@@ -186,7 +186,10 @@ public class ContactsProvider {
                     contact.phones.add(new Contact.Item(label, phoneNumber));
                 }
             }else if (mimeType.equals(Organization.CONTENT_ITEM_TYPE)) {
-                contact.company = cursor.getString(cursor.getColumnIndex(Organization.COMPANY));
+                int orgType = cursor.getInt(cursor.getColumnIndex(Organization.TYPE));
+                if (orgType == Organization.TYPE_CUSTOM) {
+                  contact.company = cursor.getString(cursor.getColumnIndex(Organization.COMPANY));
+                }
             }
             // else if (mimeType.equals(Email.CONTENT_ITEM_TYPE)) {
             //     String email = cursor.getString(cursor.getColumnIndex(Email.ADDRESS));
