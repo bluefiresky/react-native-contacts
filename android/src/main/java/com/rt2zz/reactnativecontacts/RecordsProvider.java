@@ -91,7 +91,7 @@ public class RecordsProvider {
 
       public WritableMap toMap() {
           WritableMap record = Arguments.createMap();
-          record.putString("id", recordID)
+          record.putString("id", recordID);
           record.putString("name", convertName(name));
           record.putString("number", number);
           record.putInt("type", type);

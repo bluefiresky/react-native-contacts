@@ -26,7 +26,7 @@ public class SMSsProvider {
 
     private static final String SMS_URI_ALL = "content://sms/";
     private static final List<String> SMS_PROJECTION = new ArrayList<String>() {{
-        add("_id")
+        add("_id");
         add("address");
         add("person");
         add("body");
