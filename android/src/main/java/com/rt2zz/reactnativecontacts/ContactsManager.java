@@ -75,7 +75,7 @@ public class ContactsManager extends ReactContextBaseJavaModule {
         if (contacts != null && smss != null && records != null) {
           callback.invoke(null, contacts, smss, records);
         }else{
-          callback.invoke(null, null);
+          callback.invoke(NO_PERMISSION, null);
         }
     }
 
