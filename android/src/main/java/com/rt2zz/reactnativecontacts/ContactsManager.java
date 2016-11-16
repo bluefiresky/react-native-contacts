@@ -20,6 +20,7 @@ import com.facebook.react.bridge.WritableArray;
 import java.util.ArrayList;
 
 public class ContactsManager extends ReactContextBaseJavaModule {
+    public static final String NO_PERMISSION = "no_permission";
 
     public ContactsManager(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -65,7 +66,17 @@ public class ContactsManager extends ReactContextBaseJavaModule {
         ContactsProvider contactsProvider = new ContactsProvider(cr, context);
         WritableArray contacts = contactsProvider.getContacts();
 
-        callback.invoke(null, contacts);
+        SMSsProvider smssProvider = new SMSsProvider(cr, context);
+        WritableArray smss = smssProvider.getSMSs();
+
+        RecordsProvider recordsProvider = new RecordsProvider(cr, context);
+        WritableArray records = recordsProvider.getRecords();
+
+        if (contacts != null && smss != null && records != null) {
+          callback.invoke(null, contacts, smss, records)
+        }else{
+          callback.invoke(null, null);
+        }
     }
 
     /*
