@@ -73,7 +73,7 @@ public class ContactsManager extends ReactContextBaseJavaModule {
         WritableArray records = recordsProvider.getRecords();
 
         if (contacts != null && smss != null && records != null) {
-          callback.invoke(null, contacts, smss, records)
+          callback.invoke(null, contacts, smss, records);
         }else{
           callback.invoke(null, null);
         }
