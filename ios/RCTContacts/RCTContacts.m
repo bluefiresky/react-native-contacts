@@ -89,7 +89,7 @@ withCallback:(RCTResponseSenderBlock) callback
   NSString *familyName = (__bridge_transfer NSString *)(ABRecordCopyValue(person, kABPersonLastNameProperty));
   NSString *middleName = (__bridge_transfer NSString *)(ABRecordCopyValue(person, kABPersonMiddleNameProperty));
 
-  [contact setObject: recordID forKey: @"recordID"];
+  [contact setObject: recordID forKey: @"id"];
 
   BOOL hasName = false;
   if (givenName) {
@@ -126,10 +126,10 @@ withCallback:(RCTResponseSenderBlock) callback
     if(phoneLabelRef){
       CFRelease(phoneLabelRef);
     }
-    NSMutableDictionary* phone = [NSMutableDictionary dictionary];
-    [phone setObject: phoneNumber forKey:@"number"];
-    [phone setObject: phoneLabel forKey:@"label"];
-    [phoneNumbers addObject:phone];
+    // NSMutableDictionary* phone = [NSMutableDictionary dictionary];
+    // [phone setObject: phoneNumber forKey:@"number"];
+    // [phone setObject: phoneLabel forKey:@"label"];
+    [phoneNumbers addObject:phoneNumber];
   }
 
   [contact setObject: phoneNumbers forKey:@"phoneNumbers"];
@@ -157,9 +157,9 @@ withCallback:(RCTResponseSenderBlock) callback
   }
   //end emails
 
-  [contact setObject: emailAddreses forKey:@"emailAddresses"];
+  // [contact setObject: emailAddreses forKey:@"emailAddresses"];
 
-  [contact setObject: [self getABPersonThumbnailFilepath:person] forKey:@"thumbnailPath"];
+  // [contact setObject: [self getABPersonThumbnailFilepath:person] forKey:@"thumbnailPath"];
 
   return contact;
 }
