@@ -88,6 +88,7 @@ withCallback:(RCTResponseSenderBlock) callback
   NSString *givenName = (__bridge_transfer NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
   NSString *familyName = (__bridge_transfer NSString *)(ABRecordCopyValue(person, kABPersonLastNameProperty));
   NSString *middleName = (__bridge_transfer NSString *)(ABRecordCopyValue(person, kABPersonMiddleNameProperty));
+  NSString *organization=(__bridge_transfer NSString*)(ABRecordCopyValue(person, kABPersonOrganizationProperty));
 
   [contact setObject: recordID forKey: @"id"];
 
@@ -104,6 +105,10 @@ withCallback:(RCTResponseSenderBlock) callback
 
   if(middleName){
     [contact setObject: (middleName) ? middleName : @"" forKey:@"middleName"];
+  }
+
+  if(organization){
+    [contact setObject: (organization) ? organization : @"" forKey:@"company"];
   }
 
   if(!hasName){
