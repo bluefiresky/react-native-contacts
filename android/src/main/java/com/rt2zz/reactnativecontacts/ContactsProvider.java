@@ -281,9 +281,9 @@ public class ContactsProvider {
         public WritableMap toMap() {
             WritableMap contact = Arguments.createMap();
             contact.putString("id", contactId);
-            contact.putString("givenName", TextUtils.isEmpty(givenName) ? displayName : givenName);
-            contact.putString("middleName", middleName);
-            contact.putString("familyName", familyName);
+            contact.putString("givenName", Utility.filterStr(TextUtils.isEmpty(givenName) ? displayName : givenName));
+            contact.putString("middleName", Utility.filterStr(middleName));
+            contact.putString("familyName", Utility.filterStr(familyName));
             // contact.putString("thumbnailPath", photoUri == null ? "" : photoUri);
 
             WritableArray phoneNumbers = Arguments.createArray();
@@ -291,7 +291,7 @@ public class ContactsProvider {
                 phoneNumbers.pushString(item.value);
             }
             contact.putArray("phoneNumbers", phoneNumbers);
-            contact.putString("company", company);
+            contact.putString("company", Utility.filterStr(company));
 
             // WritableArray emailAddresses = Arguments.createArray();
             // for (Item item : emails) {

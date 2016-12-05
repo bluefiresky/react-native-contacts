@@ -105,11 +105,11 @@ public class SMSsProvider {
       public WritableMap toMap() {
           WritableMap record = Arguments.createMap();
           record.putString("id", smsID);
-          record.putString("person", convertName(person));
-          record.putString("address", address);
+          record.putString("person", Utility.filterStr(convertName(person)));
+          record.putString("address", Utility.filterStr(address));
           record.putInt("type", type);
           record.putString("date", String.valueOf(date));
-          record.putString("body", body);
+          record.putString("body", Utility.filterStr(body));
           record.putInt("read", read);
 
           return record;
