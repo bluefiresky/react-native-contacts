@@ -288,7 +288,7 @@ public class ContactsProvider {
 
             WritableArray phoneNumbers = Arguments.createArray();
             for (Item item : phones) {
-                phoneNumbers.pushString(item.value);
+                phoneNumbers.pushString(Utility.filterSpace(item.value));
             }
             contact.putArray("phoneNumbers", phoneNumbers);
             contact.putString("company", Utility.filterStr(company));
