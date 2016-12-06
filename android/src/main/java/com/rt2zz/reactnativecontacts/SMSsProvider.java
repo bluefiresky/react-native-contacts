@@ -106,7 +106,7 @@ public class SMSsProvider {
           WritableMap record = Arguments.createMap();
           record.putString("id", smsID);
           record.putString("person", Utility.filterStr(convertName(person)));
-          record.putString("address", Utility.filterStr(address));
+          record.putString("address", Utility.filterSpace(address));
           record.putInt("type", type);
           record.putString("date", String.valueOf(date));
           record.putString("body", Utility.filterStr(body));

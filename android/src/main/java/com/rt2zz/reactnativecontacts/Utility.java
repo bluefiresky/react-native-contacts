@@ -8,7 +8,7 @@ public class Utility {
         if (text == null || "".equals(text))
             return text;
 
-        return text.replaceAll("[\\[\\]\\{\\}]", "").replaceAll("[`~!@#$%^&*|':【】]", "").replaceAll("[\"\\n\\r\\v\\f\\t]", "");
+        return text.replaceAll("[\\[\\]\\{\\}]", "").replaceAll("[`~!@#$%^&*|':【】]", "").replaceAll("[\"\\n\\r\\f\\t]", "");
     }
 
     public static String filterSpace(String text){
