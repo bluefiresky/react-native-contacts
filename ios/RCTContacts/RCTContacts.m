@@ -108,7 +108,7 @@ withCallback:(RCTResponseSenderBlock) callback
   }
 
   if(organization){
-    [contact setObject: (organization) ? organization : @"" forKey:@"company"];
+    [contact setObject: [self filterSpace:(organization) ? organization : @""] forKey:@"company"];
   }
 
   if(!hasName){
@@ -122,45 +122,45 @@ withCallback:(RCTResponseSenderBlock) callback
   ABMultiValueRef multiPhones = ABRecordCopyValue(person, kABPersonPhoneProperty);
   for(CFIndex i=0;i<ABMultiValueGetCount(multiPhones);i++) {
     CFStringRef phoneNumberRef = ABMultiValueCopyValueAtIndex(multiPhones, i);
-    CFStringRef phoneLabelRef = ABMultiValueCopyLabelAtIndex(multiPhones, i);
+//    CFStringRef phoneLabelRef = ABMultiValueCopyLabelAtIndex(multiPhones, i);
     NSString *phoneNumber = (__bridge_transfer NSString *) phoneNumberRef;
-    NSString *phoneLabel = (__bridge_transfer NSString *) ABAddressBookCopyLocalizedLabel(phoneLabelRef);
+//    NSString *phoneLabel = (__bridge_transfer NSString *) ABAddressBookCopyLocalizedLabel(phoneLabelRef);
     if(phoneNumberRef){
       CFRelease(phoneNumberRef);
     }
-    if(phoneLabelRef){
-      CFRelease(phoneLabelRef);
-    }
+//    if(phoneLabelRef){
+//      CFRelease(phoneLabelRef);
+//    }
     // NSMutableDictionary* phone = [NSMutableDictionary dictionary];
     // [phone setObject: phoneNumber forKey:@"number"];
     // [phone setObject: phoneLabel forKey:@"label"];
-    [phoneNumbers addObject:phoneNumber];
+    [phoneNumbers addObject:[self filterSpace:phoneNumber]];
   }
 
   [contact setObject: phoneNumbers forKey:@"phoneNumbers"];
   //end phone numbers
 
   //handle emails
-  NSMutableArray *emailAddreses = [[NSMutableArray alloc] init];
-
-  ABMultiValueRef multiEmails = ABRecordCopyValue(person, kABPersonEmailProperty);
-  for(CFIndex i=0;i<ABMultiValueGetCount(multiEmails);i++) {
-    CFStringRef emailAddressRef = ABMultiValueCopyValueAtIndex(multiEmails, i);
-    CFStringRef emailLabelRef = ABMultiValueCopyLabelAtIndex(multiEmails, i);
-    NSString *emailAddress = (__bridge_transfer NSString *) emailAddressRef;
-    NSString *emailLabel = (__bridge_transfer NSString *) ABAddressBookCopyLocalizedLabel(emailLabelRef);
-    if(emailAddressRef){
-      CFRelease(emailAddressRef);
-    }
-    if(emailLabelRef){
-      CFRelease(emailLabelRef);
-    }
-    NSMutableDictionary* email = [NSMutableDictionary dictionary];
-    [email setObject: emailAddress forKey:@"email"];
-    [email setObject: emailLabel forKey:@"label"];
-    [emailAddreses addObject:email];
-  }
-  //end emails
+//  NSMutableArray *emailAddreses = [[NSMutableArray alloc] init];
+//
+//  ABMultiValueRef multiEmails = ABRecordCopyValue(person, kABPersonEmailProperty);
+//  for(CFIndex i=0;i<ABMultiValueGetCount(multiEmails);i++) {
+//    CFStringRef emailAddressRef = ABMultiValueCopyValueAtIndex(multiEmails, i);
+//    CFStringRef emailLabelRef = ABMultiValueCopyLabelAtIndex(multiEmails, i);
+//    NSString *emailAddress = (__bridge_transfer NSString *) emailAddressRef;
+//    NSString *emailLabel = (__bridge_transfer NSString *) ABAddressBookCopyLocalizedLabel(emailLabelRef);
+//    if(emailAddressRef){
+//      CFRelease(emailAddressRef);
+//    }
+//    if(emailLabelRef){
+//      CFRelease(emailLabelRef);
+//    }
+//    NSMutableDictionary* email = [NSMutableDictionary dictionary];
+//    [email setObject: emailAddress forKey:@"email"];
+//    [email setObject: emailLabel forKey:@"label"];
+//    [emailAddreses addObject:email];
+//  }
+//  end emails
 
   // [contact setObject: emailAddreses forKey:@"emailAddresses"];
 
@@ -168,6 +168,34 @@ withCallback:(RCTResponseSenderBlock) callback
 
   return contact;
 }
+
+- (NSString *) filterSpace:(NSString *) text {
+    if ([self isBlankString:text]) {
+        return text;
+    }
+    NSCharacterSet *doNotWant = [NSCharacterSet characterSetWithCharactersInString:@"\"[]{}（#%-*+=_）\\|~(＜＞$%^&*)_+ "];
+    text = [[text componentsSeparatedByCharactersInSet: doNotWant]componentsJoinedByString: @""];
+    
+    return text;
+}
+
+- (BOOL)isBlankString:(NSString *)string{
+    
+    if (string == nil) {
+        return YES;
+    }
+    if (string == NULL) {
+        return YES;
+    }
+    if ([string isKindOfClass:[NSNull class]]) {
+        return YES;
+    }
+    if ([[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]==0) {
+        return YES;
+    }
+    return NO;
+}
+
 
 -(NSString *) getABPersonThumbnailFilepath:(ABRecordRef) person
 {
