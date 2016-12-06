@@ -7,6 +7,6 @@ public class Utility {
     public static String filterStr(String text){
         if (text == null || "".equals(text))
             return text;
-        return text.replaceAll("[`~!@#$%^&*【】\"\\n\\r\\v\\f\\s]", "");
+        return text.replaceAll("[`~!@#$%^&*【】\"\\[\\]\\{\\}:\\n\\r\\v\\f\\s]", "");
     }
 }
