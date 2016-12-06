@@ -7,7 +7,7 @@ public class Utility {
     public static String filterStr(String text){
         if (text == null || "".equals(text))
             return text;
-        return text.replaceAll("[ `~!@#$%^&*|{}':\\[\\]【】\"\\n\\r\\v\\f\\t]", "");
+        return text.replaceAll("[ `~!@#$%^&*|{}':\\[]【】\"\\n\\r\\v\\f\\t]", "");
     }
 
     public static String filterSpace(String text){
